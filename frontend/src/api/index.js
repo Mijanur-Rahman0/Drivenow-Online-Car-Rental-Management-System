@@ -25,30 +25,33 @@ export const api = {
     request('/payments/process/', { method: 'POST', json: { booking_id: bookingId, action } }),
 
   // real-time vehicle tracking simulation
-  tracking: {
-    baseUrl: 'http://localhost:5001',
-    getRentalTracking: (rentalId) => fetch(`http://localhost:5001/api/tracking/${rentalId}`).then(r => r.json()),
-    getRentalHistory: (rentalId) => fetch(`http://localhost:5001/api/tracking/${rentalId}/history`).then(r => r.json()),
-    getAllVehicles: () => fetch(`http://localhost:5001/api/tracking/vehicles`).then(r => r.json()),
-    startTracking: (rentalId, payload = {}) => fetch(`http://localhost:5001/api/tracking/start/${rentalId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(r => r.json()),
-    pauseTracking: (rentalId) => fetch(`http://localhost:5001/api/tracking/pause/${rentalId}`, { method: 'POST' }).then(r => r.json()),
-    setSpeed: (rentalId, speed) => fetch(`http://localhost:5001/api/tracking/speed/${rentalId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ speed })
-    }).then(r => r.json()),
-    stopTracking: (rentalId) => fetch(`http://localhost:5001/api/tracking/stop/${rentalId}`, { method: 'POST' }).then(r => r.json()),
-    getStaticParkings: () => fetch(`http://localhost:5001/api/static-locations/cars`).then(r => r.json()),
-    updateStaticParking: (payload) => fetch(`http://localhost:5001/api/static-locations/update`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(r => r.json()),
-  },
+  tracking: (() => {
+    const base = (import.meta.env.VITE_TRACKING_URL || 'http://localhost:5001').replace(/\/$/, '');
+    return {
+      baseUrl: base,
+      getRentalTracking: (rentalId) => fetch(`${base}/api/tracking/${rentalId}`).then(r => r.json()),
+      getRentalHistory: (rentalId) => fetch(`${base}/api/tracking/${rentalId}/history`).then(r => r.json()),
+      getAllVehicles: () => fetch(`${base}/api/tracking/vehicles`).then(r => r.json()),
+      startTracking: (rentalId, payload = {}) => fetch(`${base}/api/tracking/start/${rentalId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(r => r.json()),
+      pauseTracking: (rentalId) => fetch(`${base}/api/tracking/pause/${rentalId}`, { method: 'POST' }).then(r => r.json()),
+      setSpeed: (rentalId, speed) => fetch(`${base}/api/tracking/speed/${rentalId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ speed })
+      }).then(r => r.json()),
+      stopTracking: (rentalId) => fetch(`${base}/api/tracking/stop/${rentalId}`, { method: 'POST' }).then(r => r.json()),
+      getStaticParkings: () => fetch(`${base}/api/static-locations/cars`).then(r => r.json()),
+      updateStaticParking: (payload) => fetch(`${base}/api/static-locations/update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(r => r.json()),
+    };
+  })(),
 
   // admin
   admin: {

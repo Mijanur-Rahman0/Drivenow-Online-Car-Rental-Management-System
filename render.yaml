@@ -1,0 +1,32 @@
+services:
+  # 1. Django REST API Backend
+  - type: web
+    name: drivenow-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn car_rental_project.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+
+  # 2. Node.js Live GPS Tracking Service
+  - type: web
+    name: drivenow-tracking
+    runtime: node
+    rootDir: tracking_service
+    buildCommand: "npm install"
+    startCommand: "node index.js"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: MONGODB_URI
+        sync: false
+      - key: BACKEND_URL
+        sync: false

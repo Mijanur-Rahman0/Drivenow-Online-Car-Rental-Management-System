@@ -61,7 +61,7 @@ export default function UserTrackingModal({ booking, onClose }) {
       .catch(console.error);
 
     // Connect to rental-specific room via Socket.IO
-    const socket = io('http://localhost:5001');
+    const socket = io((import.meta.env.VITE_TRACKING_URL || 'http://localhost:5001').replace(/\/$/, ''));
     socketRef.current = socket;
 
     socket.on('connect', () => {

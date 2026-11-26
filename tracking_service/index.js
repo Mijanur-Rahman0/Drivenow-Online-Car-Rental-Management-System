@@ -7,8 +7,9 @@ const { MongoClient } = require('mongodb');
 const { SimulationEngine } = require('./simulation_engine');
 const { ROUTES, DHAKA_CITY_ROUTE } = require('./routes_data');
 
-const PORT = process.env.TRACKING_PORT || 5001;
+const PORT = process.env.PORT || process.env.TRACKING_PORT || 5001;
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+const BACKEND_URL = (process.env.BACKEND_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
 const DB_NAME = 'car_rental_db';
 
 const app = express();
@@ -182,7 +183,7 @@ app.get('/api/tracking/vehicles', async (req, res) => {
         carId: b.car_id,
         carName: car ? car.car_name : 'Unknown Car',
         model: car ? car.model : '',
-        carImage: car && car.image_path ? `http://127.0.0.1:8000/media/${car.image_path}` : null,
+        carImage: car && car.image_path ? `${BACKEND_URL}/media/${car.image_path}` : null,
         route: b.custom_route || (car ? car.route : 'Custom'),
         userName: user ? user.name : 'Unknown Customer',
         userEmail: user ? user.email : '',
@@ -245,7 +246,7 @@ app.get('/api/static-locations/cars', async (req, res) => {
         id: c.id,
         car_name: c.car_name,
         model: c.model,
-        carImage: c.image_path ? `http://127.0.0.1:8000/media/${c.image_path}` : null,
+        carImage: c.image_path ? `${BACKEND_URL}/media/${c.image_path}` : null,
         availability: c.availability,
         price: c.price,
         route: c.route,

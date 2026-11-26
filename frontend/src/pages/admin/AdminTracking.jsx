@@ -122,7 +122,7 @@ export default function AdminTracking() {
     loadParkingCars();
 
     // Connect to Socket.IO tracking server
-    const socket = io('http://localhost:5001');
+    const socket = io((import.meta.env.VITE_TRACKING_URL || 'http://localhost:5001').replace(/\/$/, ''));
     socketRef.current = socket;
 
     socket.on('connect', () => {
