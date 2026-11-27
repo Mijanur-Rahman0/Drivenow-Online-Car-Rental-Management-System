@@ -7,6 +7,7 @@ Authentication: DRF Token  ->  header  "Authorization: Token <key>"
 Error format (every endpoint):  { "detail": "human readable message" }
 """
 
+from django.conf import settings
 from django.contrib.auth import authenticate
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
@@ -115,8 +116,25 @@ def me(request):
 
 
 # ─────────────────────────────────────────────────────────────
-# PUBLIC: CARS & ROUTES
+# PUBLIC: HEALTH, CARS & ROUTES
 # ─────────────────────────────────────────────────────────────
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def health_check(request):
+    """GET /api/health/ — service & database health check."""
+    db_ok = True
+    try:
+        Car.objects.count()
+    except Exception:
+        db_ok = False
+    return Response({
+        'status': 'ok' if db_ok else 'degraded',
+        'service': 'DriveNow Car Rental API',
+        'database': 'mongodb' if getattr(settings, 'USE_MONGO', False) else 'sqlite',
+        'db_connected': db_ok,
+    }, status=status.HTTP_200_OK if db_ok else status.HTTP_503_SERVICE_UNAVAILABLE)
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

@@ -10,6 +10,7 @@ urlpatterns = [
     path('auth/me/',          views.me,          name='api_me'),
 
     # ── Public ────────────────────────────────────────────
+    path('health/',           views.health_check, name='api_health'),
     path('cars/',             views.car_list,    name='api_cars'),
     path('cars/<int:car_id>/', views.car_detail, name='api_car_detail'),
     path('routes/',           views.route_list,  name='api_routes'),
