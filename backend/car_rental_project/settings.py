@@ -69,39 +69,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'car_rental_project.wsgi.application'
 
-# ─── DATABASE ────────────────────────────────────────────────────────────────
-from pymongo import MongoClient
-
+# ─── DATABASE (MongoDB only) ────────────────────────────────────────────────
 MONGO_URI = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
+USE_MONGO = True
 
-USE_MONGO = False
-try:
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
-    client.server_info()  # raises exception if MongoDB is down
-    USE_MONGO = True
-except Exception:
-    USE_MONGO = False
-
-if USE_MONGO:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'car_rental_db',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': MONGO_URI,
-            }
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'car_rental_db',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': MONGO_URI,
         }
     }
-    print("Using MongoDB for database")
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-    print("MongoDB not found, using SQLite instead")
+}
 
 # ─── STATIC & MEDIA ──────────────────────────────────────────────────────────
 STATIC_URL = '/static/'
