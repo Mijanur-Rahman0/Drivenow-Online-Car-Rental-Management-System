@@ -92,9 +92,15 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-dark to-dark-hover text-cream shadow-lift">
-              <Car className="h-20 w-20 text-sage" />
-              <p className="mt-3 text-cream/70">Premium Fleet Available</p>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-white shadow-lift">
+              <img
+                src="/images/about-car.jpg"
+                alt="Premium Fleet Available"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark/80 via-dark/30 to-transparent p-5">
+                <p className="font-head text-lg font-semibold text-cream">Premium Fleet Available</p>
+              </div>
             </div>
           </Reveal>
         </div>
