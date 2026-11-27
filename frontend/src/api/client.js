@@ -2,7 +2,7 @@
  * client.js — one fetch wrapper for the whole app.
  * Adds the auth token, parses JSON, and turns errors into ApiError.
  */
-export const API_BASE = (import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+export const API_BASE = (import.meta.env.VITE_API_BASE || 'https://drivenow-online-car-rental-management.onrender.com/api').replace(/\/$/, '');
 
 const TOKEN_KEY = 'dn_token';
 const USER_KEY = 'dn_user';
