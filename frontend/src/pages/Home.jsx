@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import useAsync from '../utils/useAsync';
@@ -27,7 +28,11 @@ function SectionHeader({ eyebrow, title, center = true }) {
 export default function Home() {
   const cars = useAsync(() => api.cars(), []);
   const routes = useAsync(() => api.routes(), []);
-  const shownCars = (cars.data || []).slice(0, 8);
+  const [page, setPage] = useState(1);
+  const perPage = 8;
+  const allCars = cars.data || [];
+  const totalPages = Math.ceil(allCars.length / perPage);
+  const shownCars = allCars.slice((page - 1) * perPage, page * perPage);
 
   const totalCars = cars.data ? cars.data.length : null;
   const totalRoutes = routes.data ? routes.data.length : null;
@@ -116,6 +121,25 @@ export default function Home() {
               <Reveal key={car.id} delay={(i % 4) * 80}><CarCard car={car} /></Reveal>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-2">
+              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((num) => (
+                <button
+                  key={num}
+                  type="button"
+                  onClick={() => setPage(num)}
+                  className={`h-10 min-w-[40px] rounded-xl border px-3 text-sm font-bold transition ${
+                    page === num
+                      ? 'border-dark bg-dark text-white shadow-soft'
+                      : 'border-dark/15 bg-white text-dark hover:border-dark hover:bg-warm'
+                  }`}
+                >
+                  {num}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
