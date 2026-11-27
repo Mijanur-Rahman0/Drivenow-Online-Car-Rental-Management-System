@@ -118,7 +118,7 @@ export default function Home() {
           )}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {shownCars.map((car, i) => (
-              <Reveal key={car.id} delay={(i % 4) * 80}><CarCard car={car} /></Reveal>
+              <Reveal key={car.id} delay={(i % 4) * 80} className="h-full"><CarCard car={car} /></Reveal>
             ))}
           </div>
 

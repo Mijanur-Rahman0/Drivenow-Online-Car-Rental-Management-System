@@ -12,8 +12,8 @@ export default function CarCard({ car }) {
   else action = <button disabled className="btn btn-sm opacity-40">Unavailable</button>;
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-dark/15 bg-white transition duration-300 hover:-translate-y-1.5 hover:shadow-lift">
-      <div className="relative h-48 overflow-hidden bg-warm">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-dark/15 bg-white transition duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+      <div className="relative h-48 shrink-0 overflow-hidden bg-warm">
         <img
           src={carImage(car)}
           alt={car.car_name}
@@ -25,11 +25,11 @@ export default function CarCard({ car }) {
           {car.availability ? <Badge status="available">Available</Badge> : <Badge status="booked">Booked</Badge>}
         </div>
       </div>
-      <div className="p-5">
-        <div className="font-head text-xl font-bold text-dark">{car.car_name}</div>
-        <div className="text-sm text-muted">{car.model}</div>
-        {car.description && <p className="mt-1.5 text-[.82rem] leading-relaxed text-muted">{car.description}</p>}
-        <div className="mt-4 flex items-center justify-between gap-3">
+      <div className="flex flex-1 flex-col p-5">
+        <div className="truncate font-head text-xl font-bold text-dark">{car.car_name}</div>
+        <div className="truncate text-sm text-muted">{car.model}</div>
+        {car.description && <p className="mt-1.5 line-clamp-2 text-[.82rem] leading-relaxed text-muted">{car.description}</p>}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
           <div className="font-head text-lg font-bold text-dark">
             BDT {money(car.price)} <span className="font-body text-xs font-normal text-muted">/day</span>
           </div>
